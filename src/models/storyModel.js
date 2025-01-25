@@ -10,7 +10,6 @@ const pool = mysql.createPool({
   database: process.env.DB_NAME,
 });
 
-// Save a story to the database
 export const saveStory = async (story) => {
   try {
     const query = `
@@ -31,7 +30,6 @@ export const saveStory = async (story) => {
   }
 };
 
-// Get recent stories (published within the last 5 minutes)
 export const getRecentStories = async () => {
   try {
     const query = `
@@ -40,7 +38,6 @@ export const getRecentStories = async () => {
     `;
     const [rows] = await pool.execute(query);
 
-    // Map the rows to include only the necessary fields
     const stories = rows.map((story) => ({
       title: story.title,
       url: story.url,
@@ -54,17 +51,36 @@ export const getRecentStories = async () => {
   }
 };
 
-// Get the count of stories published in the last 5 minutes
 export const getRecentCount = async () => {
   try {
-    const query = `
+    const storiesQuery = `
+      SELECT title, url, time_published FROM stories 
+      WHERE time_published > NOW() - INTERVAL 5 MINUTE
+      ORDER BY time_published DESC
+    `;
+    const countQuery = `
       SELECT COUNT(*) AS count FROM stories 
       WHERE time_published > NOW() - INTERVAL 5 MINUTE
     `;
-    const [rows] = await pool.execute(query);
-    return rows[0].count;
+
+    // Execute both queries in parallel
+    const [storiesRows, countRows] = await Promise.all([
+      pool.execute(storiesQuery),
+      pool.execute(countQuery),
+    ]);
+
+    // Extract data from rows
+    const stories = storiesRows[0].map((story) => ({
+      title: story.title,
+      url: story.url,
+      time_published: story.time_published,
+    }));
+    const count = countRows[0][0].count;
+
+    // Return the desired response structure
+    return { count, stories };
   } catch (error) {
-    console.error("Error fetching recent stories count:", error);
+    console.error("Error fetching recent stories and count:", error);
     throw error;
   }
 };

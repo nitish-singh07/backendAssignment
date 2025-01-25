@@ -19,7 +19,6 @@ export const startWebSocketServer = (port) => {
     const recentStories = await getRecentStories();
     ws.send(JSON.stringify({ type: "recent-stories", data: recentStories }));
 
-    // Broadcast new stories in real-time (dummy example)
     setInterval(async () => {
       const recentStories = await getRecentStories();
       ws.send(JSON.stringify({ type: "recent-stories", data: recentStories }));
