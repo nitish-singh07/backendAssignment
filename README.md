@@ -6,8 +6,8 @@ A Node.js service that scrapes stories from Hacker News, stores them in a MySQL 
 
 1. **Clone the Repository:**
    ```bash
-   git clone https://github.com/nitish-singh07/backendassigment.git
-   cd backendassigment
+   git clone https://github.com/nitish-singh07/backendAssignment.git
+   cd backendAssignment
    ```
 
 2. **Install Dependencies:**
