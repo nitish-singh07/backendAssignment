@@ -90,17 +90,24 @@ A Node.js service that scrapes stories from Hacker News, stores them in a MySQL 
    **Example Message:**
    ```json
    {
-     "type": "recent-stories",
-     "data": [
-       {
-         "title": "Story Title",
-         "url": "https://story-url.com",
-         "author": "Author Name",
-         "score": 123,
-         "time_published": "2025-01-25T12:00:00.000Z"
-       }
-     ]
-   }
+    "type": "recent-stories",
+    "data": {
+        "count": 2,
+        "stories": [
+            {
+                "title": "Story Title",
+                "url": "https://story-url.com",
+                "time_published": "2025-02-01T12:55:56.000Z"
+            },
+            {
+                "title": "Story Title",
+                "url": "https://story-url.com",
+                "time_published": "2025-02-01T12:55:56.000Z"
+            }
+            
+        ]
+    }
+
    ```
 
 ---
