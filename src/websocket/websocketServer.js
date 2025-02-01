@@ -16,13 +16,10 @@ export const startWebSocketServer = (port) => {
     const recentCount = await getRecentCount();
     ws.send(JSON.stringify({ type: "initial-count", data: recentCount }));
 
-    const recentStories = await getRecentStories();
-    ws.send(JSON.stringify({ type: "recent-stories", data: recentStories }));
-
     setInterval(async () => {
-      const recentStories = await getRecentStories();
+      const recentStories = await getRecentCount();
       ws.send(JSON.stringify({ type: "recent-stories", data: recentStories }));
-    }, 60000 * 5); // Broadcast every minute
+    }, 60000 * 5);
   });
 
   console.log(`WebSocket server started on ws://localhost:${port}`);
